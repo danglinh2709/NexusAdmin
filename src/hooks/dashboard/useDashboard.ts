@@ -36,21 +36,24 @@ export function useDashboard() {
       startLoading();
 
       const [s, g, c] = await Promise.all([
-        dashboardService.getStats({ hideLoading: true }),
-        dashboardService.getGrowth({ hideLoading: true }),
-        dashboardService.getCategorySplit({ hideLoading: true }),
+        fetchStats(),
+        fetchGrowth(),
+        fetchCategoryList(),
       ]);
-
-      setStats(s);
-      setGrowth(g);
-      setCategoryList(c);
     } catch (err) {
       handleError(err, "unable to load dashboard, please try again");
       throw err;
     } finally {
       stopLoading();
     }
-  }, [startLoading, stopLoading, handleError]);
+  }, [
+    startLoading,
+    stopLoading,
+    handleError,
+    fetchStats,
+    fetchGrowth,
+    fetchCategoryList,
+  ]);
 
   useEffect(() => {
     fetchAll().catch(() => {});

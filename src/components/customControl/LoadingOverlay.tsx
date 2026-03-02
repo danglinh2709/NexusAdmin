@@ -1,7 +1,7 @@
 import Lottie from "lottie-react";
 import loadingAnimation from "../../assets/animations/loading.json";
 
-type Props = {
+type TLoadingOverlayProps = {
   open: boolean;
   text?: string;
   className?: string;
@@ -11,7 +11,7 @@ export const LoadingOverlay = ({
   open,
   text = "Loading data...",
   className,
-}: Props) => {
+}: TLoadingOverlayProps) => {
   if (!open) return null;
 
   return (
