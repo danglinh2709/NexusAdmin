@@ -254,7 +254,6 @@ export const ContentForm = ({
               </div>
               <ImageUploadBox
                 hideBadge={true}
-                value={initialData?.featuredImage}
                 onFileChange={(file) => {
                   setFeaturedImage(file ?? null);
                 }}

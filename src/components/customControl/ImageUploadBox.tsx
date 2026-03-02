@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Input } from "./Input";
 import { buildAssetUrl } from "../../utils/helper/asset.helper";
 import { Image } from "./Image";
+import { Button } from "./Button";
 
 type Props = {
   value?: string;
@@ -123,8 +124,8 @@ export default function ImageUploadBox({
         alt=""
         fallbackSrc="/no-image.png"
       />
-      <button
-        type="button"
+      <Button
+        variant="none"
         onClick={(ev) => {
           ev.stopPropagation();
           if (!multiple) {
@@ -138,10 +139,10 @@ export default function ImageUploadBox({
             onRemoveLocal?.(index);
           }
         }}
-        className="absolute -top-2 -right-2 bg-white text-gray-400 hover:text-red-500 rounded-full p-1 shadow-md border border-gray-100 opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute -top-2 -right-2  "
       >
         <X size={12} />
-      </button>
+      </Button>
       {isMain && !hideBadge && (
         <span className="absolute top-1 left-1 text-[8px] font-bold px-1.5 py-0.5 rounded bg-[#5850eb] text-white">
           MAIN PHOTO
