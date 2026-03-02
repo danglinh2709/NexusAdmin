@@ -1,13 +1,13 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 
-interface CategoryData {
+interface ICategoryData {
   name: string;
   value: number;
   color: string;
 }
 
-interface CategorySplitChartProps {
-  data: CategoryData[];
+interface ICategorySplitChartProps {
+  data: ICategoryData[];
   totalLabel?: string;
   totalValue?: number | string;
 }
@@ -16,7 +16,7 @@ export function CategorySplitChart({
   data,
   totalLabel = "Total Items",
   totalValue,
-}: CategorySplitChartProps) {
+}: ICategorySplitChartProps) {
   const displayTotal =
     totalValue ?? data.reduce((acc, curr) => acc + curr.value, 0);
 

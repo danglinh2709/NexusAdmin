@@ -9,7 +9,7 @@ import { SeoTab } from "./tabs/SeoTab";
 import { Button } from "../../../../components/customControl/Button";
 import {
   PRODUCT_FORM_TABS,
-  type ProductFormTab,
+  type TProductFormTab,
 } from "../../../../configs/product-form.config";
 import type { ICategory } from "../../../../types/category.type";
 import { GeneralTab } from "./tabs/GeneralTab";
@@ -71,7 +71,7 @@ const TAB_CONTENT = (
       />
     ),
     seo: () => <SeoTab />,
-  }) satisfies Record<ProductFormTab, () => JSX.Element>;
+  }) satisfies Record<TProductFormTab, () => JSX.Element>;
 
 export const ProductForm = ({
   mode,
@@ -81,7 +81,7 @@ export const ProductForm = ({
   categoryOptions,
 }: IProductFormProps) => {
   const isCreate = mode === FORM_MODE.CREATE;
-  const [activeTab, setActiveTab] = useState<ProductFormTab>(
+  const [activeTab, setActiveTab] = useState<TProductFormTab>(
     PRODUCT_FORM_TABS[0].id,
   );
 
@@ -222,9 +222,9 @@ export const ProductForm = ({
       appendIf("weight", validated.weight);
       appendIf("dimensions", validated.dimensions);
       appendIf("description", validated.description);
-      appendIf("discountPrice", validated.discountPrice);
-
-      validated.tags.forEach((t) => formData.append("tags[]", t));
+      if (Number(validated.discountPrice) > 0) {
+        formData.append("discountPrice", String(validated.discountPrice));
+      }
       formData.append("isFeatured", String(!!validated.isFeatured));
       formData.append("basePrice", String(validated.basePrice));
       formData.append("costPrice", String(validated.costPrice));
@@ -237,9 +237,8 @@ export const ProductForm = ({
       if (validated.mainImage) {
         formData.append("mainImage", validated.mainImage);
       }
-      if (validated.images && validated.images.length > 0) {
-        validated.images.forEach((img) => formData.append("images[]", img));
-      }
+      (validated.tags ?? []).forEach((t) => formData.append("tags", t));
+      (validated.images ?? []).forEach((img) => formData.append("images", img));
 
       await onSubmit({ data: formData, mainImageFile, galleryFiles });
 

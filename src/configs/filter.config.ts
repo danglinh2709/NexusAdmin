@@ -1,4 +1,4 @@
-export interface FilterState {
+export interface IFilterState {
   categories: string[];
   status: string;
   promotion: string;
@@ -8,7 +8,7 @@ export interface FilterState {
   sortOrder: "ASC" | "DESC";
 }
 
-export const DEFAULT_FILTERS: FilterState = {
+export const DEFAULT_FILTERS: IFilterState = {
   categories: [],
   status: "",
   promotion: "",

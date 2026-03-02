@@ -37,24 +37,3 @@ export interface IProductImage {
 }
 
 export type TProductsResponse = IResponse<IProducts>;
-
-export interface IDashboardCategorySplitItem {
-  name: string;
-  value: number;
-  percentage: number;
-}
-
-export type IDashboardCategorySplit = IDashboardCategorySplitItem[];
-
-export interface IDashboardLatestProduct {
-  name: string;
-  sku: string;
-  basePrice: number;
-  mainImage: string;
-}
-
-export interface IDashboardContentStatus {
-  title: string;
-  status: string;
-  action: string;
-}

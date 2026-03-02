@@ -11,7 +11,7 @@ import { buildAssetUrl } from "../../../utils/helper/asset.helper";
 
 import { PreviewRenderer } from "./PreviewRenderer";
 
-interface DocumentPreviewModalProps {
+interface IDocumentPreviewModalProps {
   open: boolean;
   onClose: () => void;
   document: IDocument | null;
@@ -21,7 +21,7 @@ export const DocumentPreviewModal = ({
   open,
   onClose,
   document: doc,
-}: DocumentPreviewModalProps) => {
+}: IDocumentPreviewModalProps) => {
   if (!open || !doc) return null;
 
   const { icon: Icon, bg, color } = getFileIcon(doc.fileName);

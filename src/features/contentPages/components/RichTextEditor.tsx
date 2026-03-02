@@ -14,12 +14,12 @@ import {
   Link as LinkIcon,
 } from "lucide-react";
 
-interface Props {
+interface IProps {
   value: string;
   onChange: (html: string) => void;
 }
 
-export const RichTextEditor = ({ value, onChange }: Props) => {
+export const RichTextEditor = ({ value, onChange }: IProps) => {
   const [, forceUpdate] = useState({});
 
   const editor = useEditor({

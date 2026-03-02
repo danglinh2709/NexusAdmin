@@ -2,7 +2,10 @@ import { Users, FileText, FileStack } from "lucide-react";
 import { StatCard } from "./components/StatCard";
 import { PlatformGrowthChart } from "./components/PlatformGrowthChart";
 import { CategorySplitChart } from "./components/CategorySplitChart";
+import { LatestProductsCard } from "./components/LatestProductsCard";
+import { ContentStatusCard } from "./components/ContentStatusCard";
 import { useDashboard } from "../../hooks/dashboard/useDashboard";
+import { useMemo } from "react";
 
 const COLORS = [
   "#10B981",
@@ -17,15 +20,17 @@ const COLORS = [
 ];
 
 export function DashboardPage() {
-  const { stats, growth, categoryList } = useDashboard();
+  const { stats, growth, categoryList, latestProducts, contentStatus } =
+    useDashboard();
 
-  const categorySplitData = categoryList
-    ? categoryList.map((item, index) => ({
-        name: item.name,
-        value: item.value,
-        color: COLORS[index % COLORS.length],
-      }))
-    : [];
+  const categorySplitData = useMemo(() => {
+    if (!categoryList) return [];
+    return categoryList.map((item, index) => ({
+      name: item.name,
+      value: item.value,
+      color: COLORS[index % COLORS.length],
+    }));
+  }, [categoryList]);
 
   const totalContent = categoryList
     ? categoryList.reduce((acc, curr) => acc + curr.value, 0)
@@ -68,6 +73,11 @@ export function DashboardPage() {
             totalLabel="Total Products"
             totalValue={totalContent}
           />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          <LatestProductsCard products={latestProducts} />
+          <ContentStatusCard content={contentStatus} />
         </div>
       </div>
     </div>

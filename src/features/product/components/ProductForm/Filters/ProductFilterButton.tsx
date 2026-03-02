@@ -18,11 +18,7 @@ export const ProductFilterButton = ({
         : "!bg-white !border-gray-100 !text-gray-500 hover:!border-gray-200"
     }`}
   >
-    <SlidersHorizontal
-      size={16}
-      strokeWidth={2.5}
-      className={isOpen ? "text-indigo-500" : "text-gray-400"}
-    />
-    <span className="font-bold text-sm">Filters</span>
+    <SlidersHorizontal size={16} strokeWidth={2.5} />
+    <span> Filters</span>
   </Button>
 );

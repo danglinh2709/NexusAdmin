@@ -1,17 +1,17 @@
 import React from "react";
 
-interface Column {
+interface IColumn {
   title: string;
   className?: string;
 }
 
-interface BaseTableProps<T> {
-  columns: Column[];
+interface IBaseTableProps<T> {
+  columns: IColumn[];
   data: T[];
   renderRow: (item: T) => React.ReactNode;
 }
 
-export function BaseTable<T>({ columns, data, renderRow }: BaseTableProps<T>) {
+export function BaseTable<T>({ columns, data, renderRow }: IBaseTableProps<T>) {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       <table className="w-full">

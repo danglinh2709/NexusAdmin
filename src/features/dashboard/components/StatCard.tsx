@@ -1,12 +1,12 @@
 import type { LucideIcon } from "lucide-react";
 
-interface StatCardProps {
+interface IStatCardProps {
   icon: LucideIcon;
   label: string;
   value: string | number;
 }
 
-export function StatCard({ icon: Icon, label, value }: StatCardProps) {
+export function StatCard({ icon: Icon, label, value }: IStatCardProps) {
   return (
     <div className="bg-white p-6 rounded-2xl border border-[#E2E8F0] shadow-sm flex flex-col gap-4">
       <div className="flex items-center justify-between">

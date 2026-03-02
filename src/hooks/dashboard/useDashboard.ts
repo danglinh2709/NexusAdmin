@@ -5,7 +5,11 @@ import type {
   IDashboardGrowth,
   IDashboardStats,
 } from "../../types/dashboard.type";
-import type { IDashboardCategorySplit } from "../../types/product.type";
+import type {
+  IDashboardCategorySplit,
+  IDashboardContentStatus,
+  IDashboardLatestProduct,
+} from "../../types/dashboard.type";
 
 export function useDashboard() {
   const { loading, error, startLoading, stopLoading, handleError } =
@@ -15,30 +19,47 @@ export function useDashboard() {
   const [growth, setGrowth] = useState<IDashboardGrowth | null>(null);
   const [categoryList, setCategoryList] =
     useState<IDashboardCategorySplit | null>(null);
+  const [latestProducts, setLatestProducts] = useState<
+    IDashboardLatestProduct[] | null
+  >(null);
+  const [contentStatus, setContentStatus] =
+    useState<IDashboardContentStatus | null>(null);
 
   const fetchStats = useCallback(async () => {
-    const res = await dashboardService.getStats({ hideLoading: true });
+    const res = await dashboardService.getStats();
     setStats(res);
   }, []);
 
   const fetchGrowth = useCallback(async () => {
-    const res = await dashboardService.getGrowth({ hideLoading: true });
+    const res = await dashboardService.getGrowth();
     setGrowth(res);
   }, []);
 
   const fetchCategoryList = useCallback(async () => {
-    const res = await dashboardService.getCategorySplit({ hideLoading: true });
+    const res = await dashboardService.getCategorySplit();
     setCategoryList(res);
+  }, []);
+
+  const fetchLatestProducts = useCallback(async () => {
+    const res = await dashboardService.getLatestProduct();
+    setLatestProducts(res);
+  }, []);
+
+  const fetchContentStatus = useCallback(async () => {
+    const res = await dashboardService.getContentStatus();
+    setContentStatus(res);
   }, []);
 
   const fetchAll = useCallback(async () => {
     try {
       startLoading();
 
-      const [s, g, c] = await Promise.all([
+      await Promise.all([
         fetchStats(),
         fetchGrowth(),
         fetchCategoryList(),
+        fetchLatestProducts(),
+        fetchContentStatus(),
       ]);
     } catch (err) {
       handleError(err, "unable to load dashboard, please try again");
@@ -53,6 +74,8 @@ export function useDashboard() {
     fetchStats,
     fetchGrowth,
     fetchCategoryList,
+    fetchLatestProducts,
+    fetchContentStatus,
   ]);
 
   useEffect(() => {
@@ -64,9 +87,13 @@ export function useDashboard() {
     stats,
     growth,
     categoryList,
+    latestProducts,
+    contentStatus,
     fetchStats,
     fetchGrowth,
     fetchCategoryList,
+    fetchLatestProducts,
+    fetchContentStatus,
     fetchAll,
     loading,
     error,

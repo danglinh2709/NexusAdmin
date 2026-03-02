@@ -1,24 +1,19 @@
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowDown, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "../../../../../components/customControl/Button";
 import { Input } from "../../../../../components/customControl/Input";
-import type { FilterState } from "../../../../../configs/filter.config";
+import type { IFilterState } from "../../../../../configs/filter.config";
 import {
   PRODUCT_STATUS_UI,
   PROMOTION_OPTIONS,
   SORT_OPTIONS,
 } from "../../../../../configs/product.config";
 import type { ICategory } from "../../../../../types/category.type";
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type ChangeEvent,
-} from "react";
+import { useCallback, useRef, useState, type ChangeEvent } from "react";
+import { useClickOutside } from "../../../../../hooks/common/useClickOutside";
 
 interface IProductFilterPanelProps {
-  filters: FilterState;
-  onChange: (filters: FilterState) => void;
+  filters: IFilterState;
+  onChange: (filters: IFilterState) => void;
   categoryOptions: ICategory[];
 }
 
@@ -26,15 +21,7 @@ const SelectArrow = ({ color = "text-gray-400" }: { color?: string }) => (
   <span
     className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 ${color}`}
   >
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-      <path
-        d="M3 5l4 4 4-4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <ArrowDown size={15} />
   </span>
 );
 
@@ -43,18 +30,10 @@ export const ProductFilterPanel = ({
   onChange,
   categoryOptions,
 }: IProductFilterPanelProps) => {
-  const [catOpen, setCatOpen] = useState(false);
-  const catRef = useRef<HTMLDivElement>(null);
+  const [catOpen, setCatOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (catRef.current && !catRef.current.contains(e.target as Node)) {
-        setCatOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  const catRef = useRef<HTMLDivElement>(null);
+  useClickOutside(catRef, () => setCatOpen(false));
 
   const toggleCategory = useCallback(
     (value: string) => {
@@ -67,7 +46,7 @@ export const ProductFilterPanel = ({
   );
 
   const setField =
-    (key: keyof FilterState) =>
+    (key: keyof IFilterState) =>
     (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) =>
       onChange({ ...filters, [key]: e.target.value });
   const selectedLabel =
@@ -87,8 +66,8 @@ export const ProductFilterPanel = ({
           </label>
           <div className="relative">
             <Button
+              className="w-full"
               variant="secondary"
-              className="w-full !bg-[#F1F5F9] !border-none !shadow-none !h-11 !px-4 text-[#475569] flex justify-between"
               type="button"
               onClick={() => setCatOpen((p) => !p)}
             >
@@ -111,7 +90,8 @@ export const ProductFilterPanel = ({
             {catOpen && (
               <div className="absolute left-0 top-full mt-1 z-50 w-full bg-white border border-gray-100 rounded-xl shadow-lg py-2 overflow-hidden">
                 <Button
-                  variant="secondary"
+                  size="sm"
+                  variant="none"
                   type="button"
                   onClick={() => onChange({ ...filters, categories: [] })}
                   className="w-full"
@@ -177,7 +157,6 @@ export const ProductFilterPanel = ({
               onChange={setField("promotion")}
               className="w-full !bg-[#F1F5F9] border-none rounded-xl h-11 px-4 text-sm text-[#1E293B] font-medium appearance-none focus:ring-2 focus:ring-indigo-500/10 transition-all cursor-pointer"
             >
-              <option value="">All Products</option>
               {PROMOTION_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
                   {opt.label}
@@ -229,7 +208,7 @@ export const ProductFilterPanel = ({
                   sortOrder: sortOrder as "ASC" | "DESC",
                 });
               }}
-              className="w-full !bg-[#F1F5F9] border-none rounded-xl h-11 px-4 text-sm text-indigo-600 font-bold appearance-none focus:ring-2 focus:ring-indigo-500/10 transition-all cursor-pointer"
+              className="w-full !bg-[#F1F5F9] border-none rounded-xl h-11 px-4 text-sm font-medium appearance-none focus:ring-2 focus:ring-indigo-500/10 transition-all cursor-pointer"
             >
               {SORT_OPTIONS.map((opt) => (
                 <option

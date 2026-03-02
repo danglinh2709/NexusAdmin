@@ -1,7 +1,7 @@
 import { X, AlertTriangle } from "lucide-react";
 import { Button } from "./Button";
 
-interface ConfirmModalProps {
+interface IConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
@@ -21,7 +21,7 @@ export const ConfirmModal = ({
   confirmLabel = "Delete",
   cancelLabel = "Cancel",
   isLoading = false,
-}: ConfirmModalProps) => {
+}: IConfirmModalProps) => {
   if (!isOpen) return null;
 
   return (

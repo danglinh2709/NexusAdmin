@@ -9,11 +9,11 @@ import {
 } from "recharts";
 import type { IDashboardGrowth } from "../../../types/dashboard.type";
 
-interface PlatformGrowthChartProps {
+interface IPlatformGrowthChartProps {
   data: IDashboardGrowth | null;
 }
 
-export function PlatformGrowthChart({ data }: PlatformGrowthChartProps) {
+export function PlatformGrowthChart({ data }: IPlatformGrowthChartProps) {
   const chartData =
     data?.labels.map((label, index) => {
       const item: any = { name: label };

@@ -7,9 +7,9 @@ export const PRODUCT_FORM_TABS = [
   { id: "seo", label: "Search Engine", icon: Globe },
 ] as const;
 
-export type ProductFormTab = (typeof PRODUCT_FORM_TABS)[number]["id"];
+export type TProductFormTab = (typeof PRODUCT_FORM_TABS)[number]["id"];
 
-export interface TabHandlers {
+export interface ITabHandlers {
   setMainImageFile: (file: File | null) => void;
   addGalleryFiles: (files: File[]) => void;
   removeGalleryFile: (index: number) => void;

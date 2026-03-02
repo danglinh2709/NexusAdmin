@@ -1,42 +1,29 @@
 import { ROUTES } from "../configs/route.config";
 import type {
-  IDashboardGrowth,
-  IDashboardStats,
-} from "../types/dashboard.type";
-import type {
   IDashboardCategorySplit,
   IDashboardContentStatus,
+  IDashboardGrowth,
   IDashboardLatestProduct,
-} from "../types/product.type";
+  IDashboardStats,
+} from "../types/dashboard.type";
 import api from "./api";
 
 const base = ROUTES.APP.DASHBOARD;
 
 export const dashboardService = {
-  getStats(options?: { hideLoading?: boolean }): Promise<IDashboardStats> {
-    // @ts-ignore - custom property handled by interceptor
-    return api.get(`${base}/stats`, { ...options });
+  getStats(): Promise<IDashboardStats> {
+    return api.get(`${base}/stats`);
   },
-  getGrowth(options?: { hideLoading?: boolean }): Promise<IDashboardGrowth> {
-    // @ts-ignore - custom property handled by interceptor
-    return api.get(`${base}/growth`, { ...options });
+  getGrowth(): Promise<IDashboardGrowth> {
+    return api.get(`${base}/growth`);
   },
-  getCategorySplit(options?: {
-    hideLoading?: boolean;
-  }): Promise<IDashboardCategorySplit> {
-    // @ts-ignore - custom property handled by interceptor
-    return api.get(`${base}/category-split`, { ...options });
+  getCategorySplit(): Promise<IDashboardCategorySplit> {
+    return api.get(`${base}/category-split`);
   },
-  getLatestProduct(options?: {
-    hideLoading?: boolean;
-  }): Promise<IDashboardLatestProduct> {
-    // @ts-ignore - custom property handled by interceptor
-    return api.get(`${base}/latest-product`, { ...options });
+  getLatestProduct(): Promise<IDashboardLatestProduct[]> {
+    return api.get(`${base}/latest-products`);
   },
-  getContentStatus(options?: {
-    hideLoading?: boolean;
-  }): Promise<IDashboardContentStatus> {
-    // @ts-ignore - custom property handled by interceptor
-    return api.get(`${base}/content-status`, { ...options });
+  getContentStatus(): Promise<IDashboardContentStatus> {
+    return api.get(`${base}/content-status`);
   },
 };

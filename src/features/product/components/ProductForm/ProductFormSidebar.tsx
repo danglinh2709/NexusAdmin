@@ -2,16 +2,16 @@ import { BadgeDollarSign } from "lucide-react";
 import { Button } from "../../../../components/customControl/Button";
 import {
   PRODUCT_FORM_TABS,
-  type ProductFormTab,
+  type TProductFormTab,
 } from "../../../../configs/product-form.config";
 
-interface ProductFormSidebarProps {
-  onTabChange: (tab: ProductFormTab) => void;
+interface IProductFormSidebarProps {
+  onTabChange: (tab: TProductFormTab) => void;
   estMargin: string;
   fieldErrors: Record<string, string | undefined>;
 }
 
-const TAB_FIELDS: Record<ProductFormTab, string[]> = {
+const TAB_FIELDS: Record<TProductFormTab, string[]> = {
   general: ["name", "sku", "categoryId", "brand", "manufacturer", "tags"],
   media: ["images", "mainImage"],
   pricing: ["basePrice", "costPrice", "discountPrice"],
@@ -22,7 +22,7 @@ export const ProductFormSidebar = ({
   onTabChange,
   estMargin,
   fieldErrors,
-}: ProductFormSidebarProps) => {
+}: IProductFormSidebarProps) => {
   return (
     <div className="w-56 flex-shrink-0 border-r border-gray-100 pt-6 pb-6 px-4 flex flex-col gap-1 text-bold">
       {PRODUCT_FORM_TABS.map((tab) => {
