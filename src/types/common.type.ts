@@ -12,12 +12,16 @@ export type TBaseQuery = {
   page: number;
   limit: number;
   search?: string;
-  categoryId?: string;
-  category?: string;
-  status?: string;
-  minPrice?: string;
-  maxPrice?: string;
+
   sortBy?: string;
+  sortOrder?: "ASC" | "DESC";
+
+  categories?: string[];
+  status?: string;
+  promotion?: string;
+
+  minPrice?: number;
+  maxPrice?: number;
 };
 
 export interface IApiResponse<T> {

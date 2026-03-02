@@ -6,12 +6,6 @@ import { useDebounce } from "../../hooks/common/useDebounce";
 import { ProductList } from "./components/ProductList";
 import { Button } from "../../components/customControl/Button";
 import { Plus } from "lucide-react";
-import {
-  ProductFilterButton,
-  ProductFilterPanel,
-  DEFAULT_FILTERS,
-  type FilterState,
-} from "./components/ProductFilter";
 import type { IProducts } from "../../types/product.type";
 import { Pagination } from "../../components/customControl/Pagination";
 import { ConfirmModal } from "../../components/customControl/ConfirmModal";
@@ -20,6 +14,9 @@ import { useProductCrud } from "../../hooks/product/useProductCrud";
 import { productService } from "../../services/product.service";
 
 import { useCategoryQuery } from "../../hooks/category/useCategoryQuery";
+import { DEFAULT_FILTERS, type FilterState } from "../../configs/filter.config";
+import { ProductFilterButton } from "./components/ProductForm/Filters/ProductFilterButton";
+import { ProductFilterPanel } from "./components/ProductForm/Filters/ProductFilterPanel";
 
 export const ProductPage = () => {
   const queryHook = useProductQuery({
@@ -54,21 +51,25 @@ export const ProductPage = () => {
   }, []);
 
   const handleApplyFilters = () => {
-    const categoryId = filters.categories.join(",");
+    queryHook.fetchProducts({
+      ...queryHook.query,
+      page: 1,
 
-    queryHook.fetchProducts(
-      {
-        ...queryHook.query,
-        page: 1,
-        search: debouncedKeyword || undefined,
-        categoryId: categoryId || undefined,
-        status: filters.status || undefined,
-        minPrice: filters.minPrice !== "0" ? filters.minPrice : undefined,
-        maxPrice: filters.maxPrice !== "99999" ? filters.maxPrice : undefined,
-        sortBy: filters.sortBy || undefined,
-      },
-      { hideLoading: true },
-    );
+      search: debouncedKeyword || undefined,
+
+      categories: filters.categories.length ? filters.categories : undefined,
+
+      status: filters.status || undefined,
+      promotion: filters.promotion || undefined,
+
+      minPrice: filters.minPrice !== "0" ? Number(filters.minPrice) : undefined,
+
+      maxPrice:
+        filters.maxPrice !== "99999" ? Number(filters.maxPrice) : undefined,
+
+      sortBy: filters.sortBy,
+      sortOrder: filters.sortOrder,
+    });
   };
 
   useEffect(() => {
@@ -114,8 +115,8 @@ export const ProductPage = () => {
       }
 
       await queryHook.fetchProducts({
+        ...queryHook.query,
         page: queryHook.query.page,
-        limit: queryHook.query.limit,
         search: debouncedKeyword || undefined,
       });
     }
@@ -133,12 +134,23 @@ export const ProductPage = () => {
 
   const onPageChange = (page: number) => {
     queryHook.fetchProducts({
+      ...queryHook.query,
       page,
-      limit: queryHook.query.limit,
-      search: queryHook.query.search,
     });
   };
 
+  const handleEdit = async (id: string) => {
+    const p = queryHook.products.find((x) => x.id === id);
+    if (p) {
+      setEditProduct(p);
+      setIsCreating(true);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    const p = queryHook.products.find((x) => x.id === id);
+    if (p) setDeleteToProduct(p);
+  };
   return (
     <div>
       <div className="bg-[#F8FAFC] min-h-screen">
@@ -222,14 +234,8 @@ export const ProductPage = () => {
                 <div className="p-6">
                   <ProductList
                     products={queryHook.products}
-                    onEdit={(id) => {
-                      const p = queryHook.products.find((x) => x.id === id);
-                      if (p) {
-                        setEditProduct(p);
-                        setIsCreating(true);
-                      }
-                    }}
-                    onDelete={crudHook.deleteProduct}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
                     loading={queryHook.loading}
                   />
                 </div>

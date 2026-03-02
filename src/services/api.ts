@@ -4,10 +4,13 @@ import { ROUTES } from "../configs/route.config";
 import { ApiError } from "../utils/api-error";
 import { ERROR_CODE } from "../configs/error.config";
 import { useLoadingStore } from "../stores/loadingStore";
+import qs from "qs";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000,
+  paramsSerializer: (params) =>
+    qs.stringify(params, { arrayFormat: "repeat", skipNulls: true }),
 });
 
 console.log(import.meta.env.VITE_API_BASE_URL);

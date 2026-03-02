@@ -14,17 +14,14 @@ export const useProductQuery = (
   const [meta, setMeta] = useState<TProductsResponse["meta"] | null>(null);
 
   const fetchProducts = useCallback(
-    async (
-      override?: Partial<TBaseQuery>,
-      options?: { hideLoading?: boolean },
-    ) => {
+    async (override?: Partial<TBaseQuery>) => {
       const finalQuery = { ...query, ...override };
 
       try {
         setLoading(true);
         setError(null);
 
-        const res = await productService.getProducts(finalQuery, options);
+        const res = await productService.getProducts(finalQuery);
         setProducts(res.items);
         setMeta(res.meta);
         setQuery(finalQuery);

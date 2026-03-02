@@ -19,9 +19,8 @@ export const useProductCrud = ({ fetchProducts, query }: IProps) => {
         startLoading();
         const created = await productService.createProduct(data);
         await fetchProducts({
+          ...query,
           page: 1,
-          limit: query.limit,
-          search: query.search,
         });
 
         return created;
@@ -43,9 +42,8 @@ export const useProductCrud = ({ fetchProducts, query }: IProps) => {
         await productService.updateProduct(id, data);
 
         await fetchProducts({
+          ...query,
           page: 1,
-          limit: query.limit,
-          search: query.search,
         });
       } catch (err) {
         handleError(err, "unable to update product, please try again");
@@ -65,9 +63,8 @@ export const useProductCrud = ({ fetchProducts, query }: IProps) => {
         await productService.deleteProduct(id);
 
         await fetchProducts({
+          ...query,
           page: 1,
-          limit: query.limit,
-          search: query.search,
         });
       } catch (err) {
         handleError(err, "unable to create category, please try again");

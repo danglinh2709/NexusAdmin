@@ -1,23 +1,14 @@
-import { useState, useRef, useEffect } from "react";
-import { SlidersHorizontal, ChevronUp, ChevronDown, Check } from "lucide-react";
-import { Button } from "../../../components/customControl/Button";
-import { Input } from "../../../components/customControl/Input";
+import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "../../../../../components/customControl/Button";
+import { Input } from "../../../../../components/customControl/Input";
+import type { FilterState } from "../../../../../configs/filter.config";
 import {
+  PRODUCT_STATUS_UI,
   PROMOTION_OPTIONS,
   SORT_OPTIONS,
-  PRODUCT_STATUS_UI,
-} from "../../../configs/product.config";
-
-import type { ICategory } from "../../../types/category.type";
-
-interface FilterState {
-  categories: string[];
-  status: string;
-  promotion: string;
-  minPrice: string;
-  maxPrice: string;
-  sortBy: string;
-}
+} from "../../../../../configs/product.config";
+import type { ICategory } from "../../../../../types/category.type";
+import { useEffect, useRef, useState } from "react";
 
 interface IProductFilterPanelProps {
   filters: FilterState;
@@ -235,74 +226,6 @@ export const ProductFilterPanel = ({
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-interface IProductFilterButtonProps {
-  isOpen: boolean;
-  onToggle: () => void;
-}
-
-export const ProductFilterButton = ({
-  isOpen,
-  onToggle,
-}: IProductFilterButtonProps) => (
-  <Button
-    onClick={onToggle}
-    className={`!h-10 px-5 !rounded-lg border-2 transition-all ${
-      isOpen
-        ? "!bg-indigo-50 !border-indigo-200 !text-indigo-600 !shadow-none"
-        : "!bg-white !border-gray-100 !text-gray-500 hover:!border-gray-200"
-    }`}
-  >
-    <SlidersHorizontal
-      size={16}
-      strokeWidth={2.5}
-      className={isOpen ? "text-indigo-500" : "text-gray-400"}
-    />
-    <span className="font-bold text-sm">Filters</span>
-  </Button>
-);
-
-export const DEFAULT_FILTERS: FilterState = {
-  categories: [],
-  status: "",
-  promotion: "",
-  minPrice: "0",
-  maxPrice: "99999",
-  sortBy: SORT_OPTIONS[0].value,
-};
-
-export type { FilterState };
-
-interface IProductFilterProps {
-  filters: FilterState;
-  setFilters: (filters: FilterState) => void;
-  categoryOptions: ICategory[];
-  isOpen: boolean;
-  onToggle: () => void;
-}
-
-export const ProductFilter = ({
-  filters,
-  setFilters,
-  categoryOptions,
-  isOpen,
-  onToggle,
-}: IProductFilterProps) => {
-  return (
-    <div className="w-full">
-      <ProductFilterButton isOpen={isOpen} onToggle={onToggle} />
-      {isOpen && (
-        <div className="mt-3">
-          <ProductFilterPanel
-            filters={filters}
-            onChange={setFilters}
-            categoryOptions={categoryOptions}
-          />
-        </div>
-      )}
     </div>
   );
 };
