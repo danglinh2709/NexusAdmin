@@ -59,12 +59,11 @@ export const ProductCard = ({ product, onDelete, onEdit }: IProductCard) => {
               <span className="text-xl font-bold text-gray-900">
                 ${fmt(sellingPrice)}
               </span>
-              {product.discountPrice &&
-                product.discountPrice !== product.basePrice && (
-                  <span className="text-sm font-medium text-gray-400 line-through">
-                    ${fmt(base)}
-                  </span>
-                )}
+              {hasDiscount && (
+                <span className="text-sm font-medium text-gray-400 line-through">
+                  ${fmt(base)}
+                </span>
+              )}
             </div>
           </div>
 

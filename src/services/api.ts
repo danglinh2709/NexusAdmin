@@ -3,7 +3,6 @@ import { storage } from "../utils/storage";
 import { ROUTES } from "../configs/route.config";
 import { ApiError } from "../utils/api-error";
 import { ERROR_CODE } from "../configs/error.config";
-import { useLoadingStore } from "../stores/loadingStore";
 import qs from "qs";
 
 const api = axios.create({
@@ -17,10 +16,6 @@ console.log(import.meta.env.VITE_API_BASE_URL);
 
 api.interceptors.request.use(
   (config) => {
-    // @ts-ignore - custom property
-    if (!config.hideLoading) {
-      useLoadingStore.getState().showLoading();
-    }
     const token = storage.getToken();
     if (token) {
       config.headers = config.headers || {};
@@ -29,18 +24,15 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    useLoadingStore.getState().hideLoading();
     return Promise.reject(error);
   },
 );
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    useLoadingStore.getState().hideLoading();
     return response.data?.data ?? response.data;
   },
   (error: AxiosError<{ message?: string }>) => {
-    useLoadingStore.getState().hideLoading();
     if (!error.response)
       return Promise.reject(new ApiError("no connect server"));
 
