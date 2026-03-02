@@ -15,6 +15,7 @@ export function useDashboard() {
   const [growth, setGrowth] = useState<IDashboardGrowth | null>(null);
   const [categoryList, setCategoryList] =
     useState<IDashboardCategorySplit | null>(null);
+
   const fetchStats = useCallback(async () => {
     const res = await dashboardService.getStats({ hideLoading: true });
     setStats(res);
@@ -33,26 +34,28 @@ export function useDashboard() {
   const fetchAll = useCallback(async () => {
     try {
       startLoading();
-      await fetchStats();
-      await fetchGrowth();
-      await fetchCategoryList();
+
+      const [s, g, c] = await Promise.all([
+        dashboardService.getStats({ hideLoading: true }),
+        dashboardService.getGrowth({ hideLoading: true }),
+        dashboardService.getCategorySplit({ hideLoading: true }),
+      ]);
+
+      setStats(s);
+      setGrowth(g);
+      setCategoryList(c);
     } catch (err) {
       handleError(err, "unable to load dashboard, please try again");
+      throw err;
     } finally {
       stopLoading();
     }
-  }, [
-    startLoading,
-    stopLoading,
-    handleError,
-    fetchStats,
-    fetchGrowth,
-    fetchCategoryList,
-  ]);
+  }, [startLoading, stopLoading, handleError]);
 
   useEffect(() => {
     fetchAll().catch(() => {});
-  }, [fetchAll]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     stats,
@@ -60,9 +63,9 @@ export function useDashboard() {
     categoryList,
     fetchStats,
     fetchGrowth,
+    fetchCategoryList,
     fetchAll,
     loading,
     error,
-    fetchCategoryList,
   };
 }
