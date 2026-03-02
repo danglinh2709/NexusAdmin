@@ -11,6 +11,7 @@ import { ContentForm } from "./components/ContentForm";
 import { useContentPagesCrud } from "../../hooks/contentPages/useContentPagesCrud";
 import { ConfirmModal } from "../../components/customControl/ConfirmModal";
 import { Pagination } from "../../components/customControl/Pagination";
+import { LoadingOverlay } from "../../components/customControl/LoadingOverlay";
 
 export const ContentPages = () => {
   const queryHook = useContentPagesQuery({
@@ -127,6 +128,7 @@ export const ContentPages = () => {
                 </div>
               )
             )}
+            <LoadingOverlay open={queryHook.loading} text="Loading..." />
 
             {!(isCreating || editingContent) && queryHook.meta && (
               <Pagination

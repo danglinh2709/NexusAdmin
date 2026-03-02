@@ -17,6 +17,7 @@ import { useCategoryQuery } from "../../hooks/category/useCategoryQuery";
 import { DEFAULT_FILTERS, type FilterState } from "../../configs/filter.config";
 import { ProductFilterButton } from "./components/ProductForm/Filters/ProductFilterButton";
 import { ProductFilterPanel } from "./components/ProductForm/Filters/ProductFilterPanel";
+import { LoadingOverlay } from "../../components/customControl/LoadingOverlay";
 
 export const ProductPage = () => {
   const queryHook = useProductQuery({
@@ -240,36 +241,10 @@ export const ProductPage = () => {
                   />
                 </div>
               ) : (
-                <div className="py-20 flex flex-col items-center justify-center text-center px-6">
-                  <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-                    <SearchComponent
-                      placeholder=""
-                      value=""
-                      onChange={() => {}}
-                      className="text-gray-300"
-                    />
-                  </div>
-                  <h3 className="text-lg font-bold text-[#1E293B] mb-1">
-                    No products found
-                  </h3>
-                  <p className="text-sm text-[#64748B] max-w-[300px] mb-6">
-                    Try adjusting your filters or search keywords to find what
-                    you're looking for.
-                  </p>
-                  {isFiltering && (
-                    <Button
-                      variant="secondary"
-                      onClick={() => {
-                        setFilters(DEFAULT_FILTERS);
-                        setKeyword("");
-                      }}
-                      className="!bg-white border-2 border-gray-100 hover:border-gray-200 text-gray-600"
-                    >
-                      Clear all filters
-                    </Button>
-                  )}
-                </div>
+                <div className="py-20 flex flex-col items-center justify-center text-center px-6"></div>
               )}
+
+              <LoadingOverlay open={queryHook.loading} />
             </div>
 
             {queryHook.meta && (

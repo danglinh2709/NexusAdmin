@@ -11,6 +11,7 @@ import { CategoryForm } from "./components/CategoryForm";
 import type { ICategory, ICategoryPayload } from "../../types/category.type";
 import { ConfirmModal } from "../../components/customControl/ConfirmModal";
 import { useCategoryCrud } from "../../hooks/category/useCategoryCrud";
+import { LoadingOverlay } from "../../components/customControl/LoadingOverlay";
 
 export const CategoryPage = () => {
   const queryHook = useCategoryQuery({
@@ -126,6 +127,8 @@ export const CategoryPage = () => {
                 </div>
               )
             )}
+
+            <LoadingOverlay open={queryHook.loading} text="Loading..." />
           </div>
         )}
         {!(isCreating || editingCategory) && queryHook.meta && (

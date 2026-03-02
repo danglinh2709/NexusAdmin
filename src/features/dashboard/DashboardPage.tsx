@@ -4,25 +4,31 @@ import { PlatformGrowthChart } from "./components/PlatformGrowthChart";
 import { CategorySplitChart } from "./components/CategorySplitChart";
 import { useDashboard } from "../../hooks/dashboard/useDashboard";
 
-export function DashboardPage() {
-  const { stats, growth } = useDashboard();
+const COLORS = [
+  "#10B981",
+  "#F59E0B",
+  "#6366F1",
+  "#EF4444",
+  "#8B5CF6",
+  "#3B82F6",
+  "#F43F5E",
+  "#14B8A6",
+  "#84CC16",
+];
 
-  const categorySplitData = stats
-    ? [
-        {
-          name: "Published Pages",
-          value: stats.publishedPages,
-          color: "#10B981",
-        },
-        { name: "Draft Pages", value: stats.draftPages, color: "#F59E0B" },
-        { name: "Documents", value: stats.totalDocuments, color: "#6366F1" },
-        { name: "Low Stock", value: stats.lowStockProducts, color: "#EF4444" },
-        { name: "Featured", value: stats.featuredProducts, color: "#8B5CF6" },
-      ]
+export function DashboardPage() {
+  const { stats, growth, categoryList } = useDashboard();
+
+  const categorySplitData = categoryList
+    ? categoryList.map((item, index) => ({
+        name: item.name,
+        value: item.value,
+        color: COLORS[index % COLORS.length],
+      }))
     : [];
 
-  const totalContent = stats
-    ? stats.publishedPages + stats.draftPages + stats.totalDocuments
+  const totalContent = categoryList
+    ? categoryList.reduce((acc, curr) => acc + curr.value, 0)
     : 0;
 
   return (
@@ -59,7 +65,7 @@ export function DashboardPage() {
           <PlatformGrowthChart data={growth} />
           <CategorySplitChart
             data={categorySplitData}
-            totalLabel="Total Assets"
+            totalLabel="Total Products"
             totalValue={totalContent}
           />
         </div>

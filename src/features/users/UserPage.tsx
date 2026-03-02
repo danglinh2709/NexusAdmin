@@ -12,6 +12,7 @@ import { UserForm } from "./components/UserForm";
 import { FORM_MODE } from "../../configs/common.config";
 import { UserTable } from "./components/UserTable";
 import { userService } from "../../services/user.service";
+import { LoadingOverlay } from "../../components/customControl/LoadingOverlay";
 
 export const UserPage = () => {
   const {
@@ -115,6 +116,8 @@ export const UserPage = () => {
                     : "No users available"}
                 </p>
               )}
+
+              <LoadingOverlay open={loading} text="Loading..." />
 
               <Button onClick={() => setIsCreating(true)}>
                 <UserPlus size={18} />

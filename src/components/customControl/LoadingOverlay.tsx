@@ -1,23 +1,35 @@
-import React from "react";
-import { useLoadingStore } from "../../stores/loadingStore";
+import Lottie from "lottie-react";
+import loadingAnimation from "../../assets/animations/loading.json";
 
-export const LoadingOverlay: React.FC = () => {
-  const { isLoading, message } = useLoadingStore();
+type Props = {
+  open: boolean;
+  text?: string;
+  className?: string;
+};
 
-  if (!isLoading) return null;
+export const LoadingOverlay = ({
+  open,
+  text = "Loading data...",
+  className,
+}: Props) => {
+  if (!open) return null;
 
   return (
-    <div className="absolute inset-0 z-[50] flex flex-col items-center justify-center bg-[#F8FAFC] transition-all duration-300">
-      <div className="flex flex-col items-center gap-6">
-        <div className="text-center space-y-2">
-          <p className="text-xl font-bold text-gray-900 tracking-tight">
-            {message || "Loading data..."}
-          </p>
-          <p className="text-sm text-gray-500 font-medium">
-            Please wait a moment.
-          </p>
-        </div>
-      </div>
+    <div
+      className={[
+        "absolute inset-0 bg-white/70 backdrop-blur-sm flex flex-col items-center justify-center z-50",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      <Lottie
+        animationData={loadingAnimation}
+        loop
+        autoplay
+        className="w-40 h-40"
+      />
+      <p className="text-sm text-gray-500 mt-2">{text}</p>
     </div>
   );
 };

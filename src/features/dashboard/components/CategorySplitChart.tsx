@@ -73,7 +73,6 @@ export function CategorySplitChart({
           </div>
         </div>
 
-        {/* Legend */}
         <div className="w-full space-y-4">
           {data.map((item, index) => (
             <div key={index} className="flex items-center justify-between">

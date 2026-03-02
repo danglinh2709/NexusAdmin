@@ -9,6 +9,7 @@ import { Plus } from "lucide-react";
 import { ConfirmModal } from "../../components/customControl/ConfirmModal";
 import { DocumentTable } from "./components/DocumentTable";
 import { DocumentForm } from "./components/DocumentForm";
+import { LoadingOverlay } from "../../components/customControl/LoadingOverlay";
 
 export const DocumentPage = () => {
   const queryHook = useDocumentQuery({ ...BASE_QUERY_CONFIG.default });
@@ -123,6 +124,8 @@ export const DocumentPage = () => {
                   </div>
                 )
               )}
+
+              <LoadingOverlay open={queryHook.loading} />
             </div>
 
             {queryHook.meta && (
