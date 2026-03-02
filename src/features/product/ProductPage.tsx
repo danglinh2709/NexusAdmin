@@ -52,6 +52,8 @@ export const ProductPage = () => {
   }, []);
 
   const handleApplyFilters = () => {
+    const min = filters.minPrice.trim();
+    const max = filters.maxPrice.trim();
     queryHook.fetchProducts({
       ...queryHook.query,
       page: 1,
@@ -63,10 +65,8 @@ export const ProductPage = () => {
       status: filters.status || undefined,
       promotion: filters.promotion || undefined,
 
-      minPrice: filters.minPrice !== "0" ? Number(filters.minPrice) : undefined,
-
-      maxPrice:
-        filters.maxPrice !== "99999" ? Number(filters.maxPrice) : undefined,
+      minPrice: min !== "" ? Number(min) : undefined,
+      maxPrice: max !== "" ? Number(max) : undefined,
 
       sortBy: filters.sortBy,
       sortOrder: filters.sortOrder,
@@ -231,20 +231,24 @@ export const ProductPage = () => {
                 )}
               </div>
 
-              {queryHook.products.length > 0 ? (
-                <div className="p-6">
-                  <ProductList
-                    products={queryHook.products}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    loading={queryHook.loading}
-                  />
-                </div>
-              ) : (
-                <div className="py-20 flex flex-col items-center justify-center text-center px-6"></div>
-              )}
+              <div className="p-6 relative">
+                {queryHook.loading && (
+                  <LoadingOverlay open={queryHook.loading} text="Loading..." />
+                )}
 
-              <LoadingOverlay open={queryHook.loading} />
+                <ProductList
+                  products={queryHook.products}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  loading={false}
+                />
+
+                {!queryHook.loading && queryHook.products.length === 0 && (
+                  <div className="py-20 flex flex-col items-center justify-center text-center px-6">
+                    No products found
+                  </div>
+                )}
+              </div>
             </div>
 
             {queryHook.meta && (

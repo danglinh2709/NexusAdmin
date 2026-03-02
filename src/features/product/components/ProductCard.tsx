@@ -12,7 +12,13 @@ interface IProductCard {
 
 export const ProductCard = ({ product, onDelete, onEdit }: IProductCard) => {
   const statusUI = PRODUCT_STATUS_UI[product.status];
+  const base = Number(product.basePrice) || 0;
+  const discount = Number(product.discountPrice) || 0;
+  const sellingPrice = discount > 0 ? discount : base;
+  const hasDiscount = discount > 0 && discount < base;
 
+  const fmt = (n: number) =>
+    n.toLocaleString(undefined, { maximumFractionDigits: 2 });
   return (
     <div className="my-3 group relative flex flex-col rounded-[20px] bg-white shadow-sm transition-all hover:shadow-md border border-gray-100 overflow-hidden">
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
@@ -51,15 +57,12 @@ export const ProductCard = ({ product, onDelete, onEdit }: IProductCard) => {
             </span>
             <div className="flex items-center gap-2">
               <span className="text-xl font-bold text-gray-900">
-                $
-                {parseFloat(
-                  product.discountPrice || product.basePrice,
-                ).toLocaleString()}
+                ${fmt(sellingPrice)}
               </span>
               {product.discountPrice &&
                 product.discountPrice !== product.basePrice && (
                   <span className="text-sm font-medium text-gray-400 line-through">
-                    ${parseFloat(product.basePrice).toLocaleString()}
+                    ${fmt(base)}
                   </span>
                 )}
             </div>
@@ -75,7 +78,6 @@ export const ProductCard = ({ product, onDelete, onEdit }: IProductCard) => {
           </div>
         </div>
 
-
         <div className="mt-auto flex justify-end gap-2">
           <Button variant="ghost">
             <Eye size={18} />
@@ -84,7 +86,7 @@ export const ProductCard = ({ product, onDelete, onEdit }: IProductCard) => {
             <Edit size={18} />
           </Button>
           <Button variant="ghost" onClick={() => onDelete?.(product.id)}>
-            <Trash2 size={18}  />
+            <Trash2 size={18} />
           </Button>
         </div>
       </div>

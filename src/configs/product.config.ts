@@ -32,13 +32,41 @@ export const formatCurrency = (value: string | number) =>
   });
 
 export const SORT_OPTIONS = [
-  { value: "createdAt:DESC", label: "Newest Additions" },
-  { value: "price:ASC", label: "Price: Low to High" },
-  { value: "price:DESC", label: "Price: High to Low" },
-  { value: "popularity:DESC", label: "Most Popular" },
+  {
+    label: "Newest Additions",
+    sortBy: "createdAt",
+    sortOrder: "DESC" as const,
+  },
+  { label: "Oldest Additions", sortBy: "createdAt", sortOrder: "ASC" as const },
+
+  {
+    label: "Price: Low to High",
+    sortBy: "basePrice",
+    sortOrder: "ASC" as const,
+  },
+  {
+    label: "Price: High to Low",
+    sortBy: "basePrice",
+    sortOrder: "DESC" as const,
+  },
+
+  {
+    label: "Stock: Low to High",
+    sortBy: "stockUnits",
+    sortOrder: "ASC" as const,
+  },
+  {
+    label: "Stock: High to Low",
+    sortBy: "stockUnits",
+    sortOrder: "DESC" as const,
+  },
+
+  { label: "Name: A to Z", sortBy: "name", sortOrder: "ASC" as const },
+  { label: "Name: Z to A", sortBy: "name", sortOrder: "DESC" as const },
 ];
 
 export const PROMOTION_OPTIONS = [
-  { value: "on_sale", label: "On Sale" },
-  { value: "featured", label: "Featured" },
+  { label: "All Products", value: "" },
+  { label: "Featured Only", value: "featured" },
+  { label: "Standard Only", value: "standard" },
 ];

@@ -12,8 +12,8 @@ export const DEFAULT_FILTERS: FilterState = {
   categories: [],
   status: "",
   promotion: "",
-  minPrice: "0",
-  maxPrice: "99999",
+  minPrice: "",
+  maxPrice: "",
   sortBy: "createdAt",
   sortOrder: "DESC",
 };

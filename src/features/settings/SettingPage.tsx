@@ -11,6 +11,7 @@ import { SettingForm } from "./components/SettingForm";
 import { Pagination } from "../../components/customControl/Pagination";
 import { useSettingCrud } from "../../hooks/setting/useSettingCrud";
 import { ConfirmModal } from "../../components/customControl/ConfirmModal";
+import { LoadingOverlay } from "../../components/customControl/LoadingOverlay";
 
 export const SettingPage = () => {
   const queryHook = useSettingQuery({ ...BASE_QUERY_CONFIG.default });
@@ -141,6 +142,8 @@ export const SettingPage = () => {
                   </div>
                 )
               )}
+
+              <LoadingOverlay open={queryHook.loading} text="Loading..." />
             </div>
 
             {queryHook.meta && (

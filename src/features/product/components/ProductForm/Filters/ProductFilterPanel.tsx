@@ -8,7 +8,13 @@ import {
   SORT_OPTIONS,
 } from "../../../../../configs/product.config";
 import type { ICategory } from "../../../../../types/category.type";
-import { useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+} from "react";
 
 interface IProductFilterPanelProps {
   filters: FilterState;
@@ -50,18 +56,20 @@ export const ProductFilterPanel = ({
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const toggleCategory = (value: string) => {
-    const next = filters.categories.includes(value)
-      ? filters.categories.filter((c) => c !== value)
-      : [...filters.categories, value];
-    onChange({ ...filters, categories: next });
-  };
+  const toggleCategory = useCallback(
+    (value: string) => {
+      const next = filters.categories.includes(value)
+        ? filters.categories.filter((c) => c !== value)
+        : [...filters.categories, value];
+      onChange({ ...filters, categories: next });
+    },
+    [filters, onChange],
+  );
 
-  const set =
+  const setField =
     (key: keyof FilterState) =>
-    (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) =>
+    (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) =>
       onChange({ ...filters, [key]: e.target.value });
-
   const selectedLabel =
     filters.categories.length === 0
       ? "Select Categories"
@@ -145,7 +153,7 @@ export const ProductFilterPanel = ({
           <div className="relative">
             <select
               value={filters.status}
-              onChange={set("status")}
+              onChange={setField("status")}
               className="w-full !bg-[#F1F5F9] border-none rounded-xl h-11 px-4 text-sm text-[#1E293B] font-medium appearance-none focus:ring-2 focus:ring-indigo-500/10 transition-all cursor-pointer"
             >
               <option value="">All Statuses</option>
@@ -166,7 +174,7 @@ export const ProductFilterPanel = ({
           <div className="relative">
             <select
               value={filters.promotion}
-              onChange={set("promotion")}
+              onChange={setField("promotion")}
               className="w-full !bg-[#F1F5F9] border-none rounded-xl h-11 px-4 text-sm text-[#1E293B] font-medium appearance-none focus:ring-2 focus:ring-indigo-500/10 transition-all cursor-pointer"
             >
               <option value="">All Products</option>
@@ -189,7 +197,7 @@ export const ProductFilterPanel = ({
           <Input
             type="number"
             value={filters.minPrice}
-            onChange={set("minPrice")}
+            onChange={setField("minPrice")}
             className="!bg-[#F1F5F9] border-none rounded-xl h-11 px-4 text-sm text-[#1E293B] font-medium focus:ring-2 focus:ring-indigo-500/10 transition-all"
           />
         </div>
@@ -201,7 +209,7 @@ export const ProductFilterPanel = ({
           <Input
             type="number"
             value={filters.maxPrice}
-            onChange={set("maxPrice")}
+            onChange={setField("maxPrice")}
             className="!bg-[#F1F5F9] border-none rounded-xl h-11 px-4 text-sm text-[#1E293B] font-medium focus:ring-2 focus:ring-indigo-500/10 transition-all"
           />
         </div>
@@ -212,12 +220,22 @@ export const ProductFilterPanel = ({
           </label>
           <div className="relative">
             <select
-              value={filters.sortBy}
-              onChange={set("sortBy")}
+              value={`${filters.sortBy}_${filters.sortOrder}`}
+              onChange={(e) => {
+                const [sortBy, sortOrder] = e.target.value.split("_");
+                onChange({
+                  ...filters,
+                  sortBy,
+                  sortOrder: sortOrder as "ASC" | "DESC",
+                });
+              }}
               className="w-full !bg-[#F1F5F9] border-none rounded-xl h-11 px-4 text-sm text-indigo-600 font-bold appearance-none focus:ring-2 focus:ring-indigo-500/10 transition-all cursor-pointer"
             >
               {SORT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
+                <option
+                  key={`${opt.sortBy}_${opt.sortOrder}`}
+                  value={`${opt.sortBy}_${opt.sortOrder}`}
+                >
                   {opt.label}
                 </option>
               ))}
