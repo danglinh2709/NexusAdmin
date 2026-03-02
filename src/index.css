@@ -1,0 +1,13 @@
+@import "tailwindcss";
+.ProseMirror {
+  outline: none !important;
+  border: none !important;
+}
+
+.ProseMirror:focus {
+  outline: none !important;
+}
+
+.ProseMirror:focus-visible {
+  outline: none !important;
+}
