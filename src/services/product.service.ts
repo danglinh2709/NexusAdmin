@@ -45,6 +45,10 @@ export const productService = {
     );
   },
 
+  deleteProductImage(id: string, imageId: string): Promise<void> {
+    return api.delete(`${base}/${id}/images/${imageId}`);
+  },
+
   getProduct(id: string): Promise<IProducts> {
     return api.get<any, IProducts>(`${base}/${id}`);
   },

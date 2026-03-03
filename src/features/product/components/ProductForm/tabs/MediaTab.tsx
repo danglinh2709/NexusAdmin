@@ -41,7 +41,6 @@ export const MediaTab = ({
               const newImages = form.images?.filter((_, i) => i !== index);
               setField("images", newImages);
             }}
-            variant="gallery"
           />
         </div>
       </div>

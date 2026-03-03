@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type JSX } from "react";
 import { AlertCircle, Package, X } from "lucide-react";
 import { FORM_MODE, type FormMode } from "../../../../configs/common.config";
-import type { IProducts } from "../../../../types/product.type";
+import type { IProductImage, IProducts } from "../../../../types/product.type";
 import { ProductFormSidebar } from "./ProductFormSidebar";
 import { PricingTab } from "./tabs/PricingTab";
 import { MediaTab } from "./tabs/MediaTab";
@@ -117,6 +117,7 @@ export const ProductForm = ({
 
   const [mainImageFile, setMainImageFile] = useState<File | null>(null);
   const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
+
   const removeGalleryFile = (index: number) => {
     setGalleryFiles((prev) => prev.filter((_, i) => i !== index));
   };
@@ -145,6 +146,7 @@ export const ProductForm = ({
       .filter(Boolean);
   };
 
+  // initial data for edit
   useEffect(() => {
     if (!initialData) return;
 
@@ -186,23 +188,13 @@ export const ProductForm = ({
     setGalleryFiles([]);
   }, [initialData]);
 
+  // create + edit
   const handleSubmit = async () => {
     try {
       setLoading(true);
       setError(null);
       setIsDisplayErrors(true);
       setFieldErrors({});
-
-      const hasAnyImage =
-        !!mainImageFile ||
-        galleryFiles.length > 0 ||
-        !!form.mainImage ||
-        (form.images?.length ?? 0) > 0;
-
-      if (!hasAnyImage) {
-        setFieldErrors({ images: "At least 1 product image is required" });
-        return;
-      }
 
       const validated = productSchema.parse(form);
 
@@ -266,8 +258,10 @@ export const ProductForm = ({
       setLoading(false);
     }
   };
+
   const uiFieldErrors = isDisplayErrors ? fieldErrors : {};
 
+  // tabs
   const tabs = TAB_CONTENT(uiFieldErrors, form, setField, {
     setMainImageFile,
     addGalleryFiles: (files) => setGalleryFiles((prev) => [...prev, ...files]),
@@ -275,6 +269,7 @@ export const ProductForm = ({
     categoryOptions,
   });
 
+  // accu
   const estMargin = useMemo(() => {
     const base = Number(form.basePrice) || 0;
     const discount = Number(form.discountPrice) || 0;

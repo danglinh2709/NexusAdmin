@@ -1,8 +1,10 @@
 import type { IDocument } from "../../../types/document.type";
 import { Image } from "../../../components/customControl/Image";
-import type { FilePreviewType } from "../../../types/file-preview.types";
 import { AlertCircle, Box } from "lucide-react";
-import { FILE_PREVIEW_TYPE } from "../../../configs/file-preview.config";
+import {
+  FILE_PREVIEW_TYPE,
+  type FilePreviewType,
+} from "../../../configs/file-preview.config";
 import { buildOfficeViewerUrl } from "../../../utils/helper/file.helper";
 
 type Props = {

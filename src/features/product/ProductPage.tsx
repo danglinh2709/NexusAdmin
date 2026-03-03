@@ -131,15 +131,6 @@ export const ProductPage = () => {
       }
     } else if (formMode === FORM_MODE.EDIT && editProduct) {
       await crudHook.updateProduct(editProduct.id, data);
-
-      if (mainImageFile) {
-        await productService.uploadProductImages(editProduct.id, [
-          mainImageFile,
-        ]);
-      }
-      if (galleryFiles.length > 0) {
-        await productService.uploadProductImages(editProduct.id, galleryFiles);
-      }
     }
 
     setFormOpen(false);
@@ -181,9 +172,9 @@ export const ProductPage = () => {
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="bg-white rounded-[24px] shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100 bg-white">
-              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="rounded-[24px] overflow-hidden">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
                 <div className="flex flex-col sm:flex-row gap-3 sm:items-center flex-1">
                   <SearchComponent
                     placeholder="Search name, SKU..."
@@ -205,7 +196,7 @@ export const ProductPage = () => {
               </div>
 
               {isFilterOpen && (
-                <div className="mt-6 p-6 bg-[#F8FAFC] rounded-2xl border border-gray-100/50 animate-in fade-in slide-in-from-top-2 duration-300">
+                <div className="mt-6 p-6 bg-white rounded-2xl border border-gray-100/50 animate-in fade-in slide-in-from-top-2 duration-300">
                   <ProductFilterPanel
                     filters={filters}
                     onChange={setFilters}

@@ -17,7 +17,6 @@ type Props = {
   onRemoveLocal?: (index: number) => void;
   onRemoveServer?: (index: number) => void;
 
-  variant?: "main" | "gallery";
   hideBadge?: boolean;
 };
 
@@ -53,12 +52,7 @@ export default function ImageUploadBox({
     });
   };
 
-  const singleSrc = useMemo(() => {
-    if (previewUrl) return previewUrl;
-    if (value) return buildAssetUrl(value);
-    return "";
-  }, [value, previewUrl]);
-
+  // clean up
   useEffect(() => {
     const currentPreviewUrl = previewUrl;
     return () => {
@@ -66,6 +60,7 @@ export default function ImageUploadBox({
     };
   }, [previewUrl]);
 
+  // rest preview wen value/multiple change
   useEffect(() => {
     if (multiple) {
       previewUrls.forEach((u) => URL.revokeObjectURL(u));
@@ -77,15 +72,25 @@ export default function ImageUploadBox({
     if (inputRef.current) inputRef.current.value = "";
   }, [value, multiple]);
 
+  //
+  const singleSrc = useMemo(() => {
+    if (previewUrl) return previewUrl;
+    if (value) return buildAssetUrl(value);
+    return "";
+  }, [value, previewUrl]);
+
+  //
   const serverList = useMemo(() => {
     if (!values?.length) return [];
     return values.map((v) => buildAssetUrl(v));
   }, [values]);
 
+  //
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const picked = Array.from(e.target.files ?? []);
     if (picked.length === 0) return;
 
+    // signle mode
     if (!multiple) {
       const file = picked[0];
       if (!file || !file.type.startsWith("image/")) return;
@@ -99,6 +104,7 @@ export default function ImageUploadBox({
       return;
     }
 
+    // multiple mode
     const imageFiles = picked.filter((f) => f.type.startsWith("image/"));
     if (imageFiles.length === 0) return;
 
